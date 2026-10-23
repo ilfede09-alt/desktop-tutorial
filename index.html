@@ -1,1 +1,371 @@
-<h1>ciao, sono fede</h1>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Link</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5fa;
+            color: #263247;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #4057c8;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        header p {
+            color: #738096;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(35, 50, 80, 0.07);
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #edf0f6;
+        }
+
+        th {
+            background: #f5f6fc;
+            color: #5665a8;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        a {
+            color: #4057c8;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #536078;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dce2ee;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input:focus {
+            border-color: #5269dc;
+        }
+
+        button {
+            border: none;
+            background: #4c60d4;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #3549b5;
+        }
+
+        .delete-btn {
+            background: #fff0f0;
+            color: #c43d4b;
+            padding: 8px 11px;
+        }
+
+        .delete-btn:hover {
+            background: #ffdddd;
+        }
+
+        .status {
+            margin-top: 12px;
+            color: #27805b;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            color: #929bad;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 25px 12px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            th, td {
+                padding: 11px 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+            <h1>Gestione Link</h1>
+            <p>Una pagina semplice per organizzare persone e collegamenti.</p>
+        </header>
+
+        <section class="card">
+            <h2>📋 Tabella persone</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Pagina / URL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="peopleTable">
+                        <tr>
+                            <td>Federico</td>
+                            <td>Spano</td>
+                            <td>
+                                <a href="https://example.com"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    https://example.com
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🔗 Preimpostazione nuovi link</h2>
+            <p style="color:#738096; margin-bottom:20px; font-size:14px;">
+                Aggiungi una persona e collega la sua riga a una pagina web.
+            </p>
+
+            <form id="personForm">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="nome">Nome</label>
+                        <input id="nome" type="text"
+                               placeholder="Es. Mario" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="cognome">Cognome</label>
+                        <input id="cognome" type="text"
+                               placeholder="Es. Rossi" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="url">URL della pagina</label>
+                    <input id="url" type="url"
+                           placeholder="https://esempio.it"
+                           required>
+                </div>
+
+                <button type="submit">+ Aggiungi link</button>
+                <p class="status" id="formStatus"></p>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>⚙️ Cambia URL di Federico Spano</h2>
+
+            <form id="federicoForm">
+                <div class="field">
+                    <label for="federicoUrl">Nuovo indirizzo web</label>
+                    <input id="federicoUrl" type="url"
+                           placeholder="https://nuova-pagina.it"
+                           value="https://example.com"
+                           required>
+                </div>
+
+                <button type="submit">Aggiorna URL</button>
+                <p class="status" id="federicoStatus"></p>
+            </form>
+        </section>
+
+        <footer>
+            Gestione Link · Pagina personale
+        </footer>
+
+    </div>
+
+    <script>
+        const peopleTable = document.getElementById("peopleTable");
+        const personForm = document.getElementById("personForm");
+        const federicoForm = document.getElementById("federicoForm");
+
+        function createLink(url) {
+            const link = document.createElement("a");
+            link.href = url;
+            link.textContent = url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            return link;
+        }
+
+        function normalizeUrl(value) {
+            const url = new URL(value);
+
+            if (!["http:", "https:"].includes(url.protocol)) {
+                throw new Error("Inserisci un URL HTTP o HTTPS.");
+            }
+
+            return url.href;
+        }
+
+        personForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById("nome").value.trim();
+            const cognome = document.getElementById("cognome").value.trim();
+            const urlInput = document.getElementById("url").value.trim();
+            const status = document.getElementById("formStatus");
+
+            try {
+                const url = normalizeUrl(urlInput);
+                const row = document.createElement("tr");
+
+                const nomeCell = row.insertCell();
+                const cognomeCell = row.insertCell();
+                const urlCell = row.insertCell();
+
+                nomeCell.textContent = nome;
+                cognomeCell.textContent = cognome;
+                urlCell.appendChild(createLink(url));
+
+                peopleTable.appendChild(row);
+                personForm.reset();
+                status.textContent = "Link aggiunto correttamente!";
+            } catch (error) {
+                status.textContent = error.message ||
+                    "Inserisci un URL valido.";
+            }
+        });
+
+        federicoForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const urlInput =
+                document.getElementById("federicoUrl").value.trim();
+            const status = document.getElementById("federicoStatus");
+
+            try {
+                const url = normalizeUrl(urlInput);
+                const rows = peopleTable.querySelectorAll("tr");
+                let found = false;
+
+                rows.forEach(function(row) {
+                    const cells = row.cells;
+
+                    if (
+                        cells.length >= 3 &&
+                        cells[0].textContent.trim().toLowerCase() === "federico" &&
+                        cells[1].textContent.trim().toLowerCase() === "spano"
+                    ) {
+                        cells[2].replaceChildren(createLink(url));
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    status.textContent = "URL di Federico Spano aggiornato!";
+                } else {
+                    status.textContent =
+                        "Non è stata trovata la riga di Federico Spano.";
+                }
+            } catch (error) {
+                status.textContent = error.message ||
+                    "Inserisci un URL valido.";
+            }
+        });
+    </script>
+</body>
+</html>
