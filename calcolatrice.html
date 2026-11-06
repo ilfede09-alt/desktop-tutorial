@@ -1,18 +1,17 @@
-
 <!DOCTYPE html>
-<html lang="it">
+<html>
 
 <head>
-    <meta charset="UTF-8">
+
     <title>Semi-calcolatrice</title>
 
     <style>
 
         body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
+            font-family: Arial;
             background-color: #F7F8F6;
             color: #4A5550;
+            margin: 30px;
         }
 
         h2 {
@@ -20,44 +19,25 @@
         }
 
         .contenitore {
-            width: 320px;
+            width: 300px;
             padding: 25px;
+            background-color: white;
             border: 1px solid #DCE5DF;
             border-radius: 14px;
-            background-color: #FFFFFF;
-            box-shadow: 0 4px 12px rgba(100,125,110,0.08);
-        }
-
-        .campo {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            color: #65766D;
-            font-weight: bold;
         }
 
         input {
-            width: 100%;
+            width: 95%;
             padding: 10px;
+            margin-bottom: 15px;
             border: 1px solid #D9E2DC;
             border-radius: 7px;
-            background-color: #FAFCFA;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .pulsanti {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 20px;
         }
 
         button {
+            width: 65px;
             padding: 12px;
+            margin: 4px;
             background-color: #A9C4B3;
             color: white;
             border: none;
@@ -71,19 +51,16 @@
         }
 
         .uguale {
-            grid-column: span 2;
+            width: 95%;
             background-color: #819F8C;
         }
 
-        .risultato {
+        #risultato {
             margin-top: 20px;
             padding: 15px;
-            border-radius: 8px;
             background-color: #EDF3EE;
-            color: #52685B;
-            font-size: 18px;
+            border-radius: 8px;
             font-weight: bold;
-            text-align: center;
         }
 
     </style>
@@ -96,31 +73,25 @@
 
     <div class="contenitore">
 
-        <div class="campo">
-            <label>Primo numero:</label>
-            <input type="text" id="numero1">
-        </div>
+        <label>Primo numero</label>
+        <input type="text" id="n1">
 
-        <div class="campo">
-            <label>Secondo numero:</label>
-            <input type="text" id="numero2">
-        </div>
+        <label>Secondo numero</label>
+        <input type="text" id="n2">
 
-        <div class="pulsanti">
+        <br>
 
-            <button type="button" onclick="selezionaOperazione('+')">+</button>
+        <button onclick="somma()">+</button>
 
-            <button type="button" onclick="selezionaOperazione('-')">-</button>
+        <button onclick="sottrazione()">-</button>
 
-            <button type="button" onclick="selezionaOperazione('*')">*</button>
+        <button onclick="moltiplicazione()">*</button>
 
-            <button type="button" onclick="selezionaOperazione('/')">/</button>
+        <button onclick="divisione()">/</button>
 
-            <button type="button" class="uguale" onclick="calcola()">=</button>
+        <button class="uguale" onclick="calcola()">=</button>
 
-        </div>
-
-        <div class="risultato" id="risultato">
+        <div id="risultato">
             Risultato:
         </div>
 
@@ -129,90 +100,71 @@
 
     <script>
 
-    
-
+        let numero1;
+        let numero2;
+        let risultato;
         let operazione = "";
 
+        function somma() {
+            operazione = "+";
+        }
 
-        
+        function sottrazione() {
+            operazione = "-";
+        }
 
-        function selezionaOperazione(simbolo) {
+        function moltiplicazione() {
+            operazione = "*";
+        }
 
-            operazione = simbolo;
-
-            document.getElementById("risultato").innerHTML =
-                "Operazione selezionata: " + simbolo;
-
+        function divisione() {
+            operazione = "/";
         }
 
 
-    
-
         function calcola() {
 
-            
+            numero1 = Number(document.getElementById("n1").value);
 
-            let n1 = document.getElementById("numero1").value;
-            let n2 = document.getElementById("numero2").value;
+            numero2 = Number(document.getElementById("n2").value);
 
-          
+            if (operazione == "+") {
 
-            if (n1.trim() === "" || n2.trim() === "") {
-
-                alert("Inserire entrambi i numeri!");
-                return;
+                risultato = numero1 + numero2;
 
             }
+            else if (operazione == "-") {
 
-    
-
-            n1 = Number(n1.replace(",", "."));
-            n2 = Number(n2.replace(",", "."));
-
-            if (!Number.isFinite(n1) || !Number.isFinite(n2)) {
-
-                alert("Inserire numeri validi!");
-                return;
+                risultato = numero1 - numero2;
 
             }
+            else if (operazione == "*") {
 
-           
-
-            if (operazione === "") {
-
-                alert("Selezionare un'operazione!");
-                return;
+                risultato = numero1 * numero2;
 
             }
+            else if (operazione == "/") {
 
-            let risultato;
-
-            // Eseguo il calcolo
-
-            if (operazione === "+") {
-
-                risultato = n1 + n2;
-
-            }
-            else if (operazione === "-") {
-
-                risultato = n1 - n2;
-
-            }
-            else if (operazione === "*") {
-
-                risultato = n1 * n2;
-
-            }
-            else if (operazione === "/") {
-
-                if (n2 === 0) {
-
+                if (numero2 == 0) {
                     alert("Non puoi dividere per zero!");
                     return;
-
                 }
 
-                risultato = n1 / n2;
+                risultato = numero1 / numero2;
 
             }
+            else {
+
+                alert("Seleziona un'operazione!");
+                return;
+
+            }
+
+            document.getElementById("risultato").innerHTML =
+                "Risultato: " + risultato;
+
+        }
+
+    </script>
+
+</body>
