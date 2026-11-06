@@ -10,8 +10,6 @@
 
     <style>
 
-     
-
         body {
             font-family: Arial, sans-serif;
             margin: 30px;
@@ -23,8 +21,6 @@
             color: #687D73;
         }
 
-
-
         .contenitore {
             width: 320px;
             padding: 25px;
@@ -33,9 +29,6 @@
             background-color: #FFFFFF;
             box-shadow: 0 4px 12px rgba(100, 125, 110, 0.08);
         }
-
-
-       
 
         .campo {
             margin-bottom: 15px;
@@ -62,11 +55,7 @@
 
         input:focus {
             border-color: #A8C3B1;
-            background-color: #FFFFFF;
         }
-
-
-        
 
         .pulsanti {
             display: grid;
@@ -75,8 +64,6 @@
             margin-top: 20px;
         }
 
-
-       
         button {
             padding: 12px;
             background-color: #A9C4B3;
@@ -85,11 +72,14 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 17px;
-            transition: background-color 0.2s;
         }
 
         button:hover {
             background-color: #8EAD9B;
+        }
+
+        button.selezionato {
+            background-color: #617E6B;
         }
 
         .uguale {
@@ -97,13 +87,6 @@
             background-color: #819F8C;
             font-weight: bold;
         }
-
-        .uguale:hover {
-            background-color: #6F8F7A;
-        }
-
-
-      
 
         .risultato {
             margin-top: 20px;
@@ -125,52 +108,31 @@
 
     <h2>Semi-calcolatrice</h2>
 
-    
-
     <div class="contenitore">
 
-        
-
         <div class="campo">
-
             <label for="numero1">Primo numero:</label>
-
             <input type="text" id="numero1">
-
         </div>
-
-
-   
 
         <div class="campo">
-
             <label for="numero2">Secondo numero:</label>
-
             <input type="text" id="numero2">
-
         </div>
-
-
-   
 
         <div class="pulsanti">
 
-            <button onclick="somma()">+</button>
+            <button id="somma" onclick="seleziona('+')">+</button>
 
-            <button onclick="sottrazione()">-</button>
+            <button id="sottrazione" onclick="seleziona('-')">-</button>
 
-            <button onclick="moltiplicazione()">*</button>
+            <button id="moltiplicazione" onclick="seleziona('*')">*</button>
 
-            <button onclick="divisione()">/</button>
+            <button id="divisione" onclick="seleziona('/')">/</button>
 
-            <button class="uguale" onclick="calcola()">
-                =
-            </button>
+            <button class="uguale" onclick="calcola()">=</button>
 
         </div>
-
-
-        
 
         <div class="risultato" id="risultato">
             Risultato:
@@ -179,8 +141,6 @@
     </div>
 
 
- 
-
     <script>
 
        
@@ -188,101 +148,96 @@
         let operazione = "";
 
 
-       
-
-        function somma() {
-
-            operazione = "+";
-
-        }
-
-
-       
-
-        function sottrazione() {
-
-            operazione = "-";
-
-        }
-
-
-       
-
-        function moltiplicazione() {
-
-            operazione = "*";
-
-        }
-
-
       
 
-        function divisione() {
+        function seleziona(simbolo) {
 
-            operazione = "/";
+            operazione = simbolo;
 
-        }
+    
 
-
-      
-
-        function calcola() {
+            document.querySelectorAll(".pulsanti button")
+                .forEach(function(pulsante) {
+                    pulsante.classList.remove("selezionato");
+                });
 
            
 
-            let n1 = parseFloat(
-                document.getElementById("numero1").value
-            );
+            let pulsanteScelto;
 
-            let n2 = parseFloat(
-                document.getElementById("numero2").value
-            );
+            if (simbolo === "+") {
+                pulsanteScelto = "somma";
+            }
+            else if (simbolo === "-") {
+                pulsanteScelto = "sottrazione";
+            }
+            else if (simbolo === "*") {
+                pulsanteScelto = "moltiplicazione";
+            }
+            else if (simbolo === "/") {
+                pulsanteScelto = "divisione";
+            }
 
+            document.getElementById(pulsanteScelto)
+                .classList.add("selezionato");
+
+        }
+
+
+  
+
+        function calcola() {
+
+         
+
+            let valore1 = document.getElementById("numero1").value.trim();
+            let valore2 = document.getElementById("numero2").value.trim();
 
           
 
-            if (
-                document.getElementById("numero1").value.trim() === "" ||
-                document.getElementById("numero2").value.trim() === "" ||
-                !Number.isFinite(n1) ||
-                !Number.isFinite(n2)
-            ) {
+            if (valore1 === "" || valore2 === "") {
 
-                alert("Inserire due numeri validi!");
+                alert("Inserire entrambi i numeri!");
                 return;
 
             }
 
+            let n1 = Number(valore1.replace(",", "."));
+            let n2 = Number(valore2.replace(",", "."));
+
+           
+
+            if (!Number.isFinite(n1) || !Number.isFinite(n2)) {
+
+                alert("Inserire solamente numeri validi!");
+                return;
+
+            }
 
             
 
+            if (operazione === "") {
+
+                alert("Selezionare un'operazione!");
+                return;
+
+            }
+
             let risultato;
-
-
-          
 
             switch (operazione) {
 
                 case "+":
-
                     risultato = n1 + n2;
-
                     break;
-
 
                 case "-":
-
                     risultato = n1 - n2;
-
                     break;
-
 
                 case "*":
-
                     risultato = n1 * n2;
-
                     break;
-
 
                 case "/":
 
@@ -294,14 +249,21 @@
                     }
 
                     risultato = n1 / n2;
-
                     break;
 
+            }
 
-                default:
+          
 
-                    alert("Selezionare un'operazione!");
-                    return;
+            document.getElementById("risultato").textContent =
+                "Risultato: " + risultato;
 
+        }
+
+    </script>
+
+</body>
+
+</html>
             }
 
