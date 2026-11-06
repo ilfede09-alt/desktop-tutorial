@@ -103,7 +103,6 @@
 
     <h2>Inserimento dati anagrafici</h2>
 
-    <!-- GABBIA GRAFICA -->
     <div class="contenitore">
 
         <div class="campo">
@@ -138,7 +137,7 @@
     </div>
 
 
-    <!-- TABELLA DINAMICA -->
+  
     <h2>Elenco persone</h2>
 
     <table id="tabella">
@@ -159,19 +158,19 @@
     </table>
 
 
-    <!-- JAVASCRIPT -->
+  
     <script>
 
         function aggiungiDati() {
 
-            // Recupero i valori dagli input
+            
             let nome = document.getElementById("nome").value;
             let cognome = document.getElementById("cognome").value;
             let indirizzo = document.getElementById("indirizzo").value;
             let citta = document.getElementById("citta").value;
             let eta = document.getElementById("eta").value;
 
-            // Controllo che tutti i campi siano compilati
+           
             if (nome.trim() === "" ||
                 cognome.trim() === "" ||
                 indirizzo.trim() === "" ||
@@ -182,16 +181,16 @@
                 return;
             }
 
-            // Recupero il corpo della tabella
+         
             let tabella = document.getElementById("corpoTabella");
 
-            // Creo una nuova riga
+            
             let riga = tabella.insertRow(-1);
 
-            // Inserisco i dati in un array
+       
             let dati = [nome, cognome, indirizzo, citta, eta];
 
-            // Creo dinamicamente le celle
+         
             for (let i = 0; i < dati.length; i++) {
 
                 let cella = riga.insertCell(i);
@@ -200,7 +199,7 @@
 
             }
 
-            // Svuoto i campi dopo l'inserimento
+          
             document.getElementById("nome").value = "";
             document.getElementById("cognome").value = "";
             document.getElementById("indirizzo").value = "";
