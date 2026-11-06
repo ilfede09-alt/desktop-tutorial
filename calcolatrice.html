@@ -4,8 +4,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Semi-calcolatrice</title>
 
     <style>
@@ -27,7 +25,7 @@
             border: 1px solid #DCE5DF;
             border-radius: 14px;
             background-color: #FFFFFF;
-            box-shadow: 0 4px 12px rgba(100, 125, 110, 0.08);
+            box-shadow: 0 4px 12px rgba(100,125,110,0.08);
         }
 
         .campo {
@@ -38,7 +36,7 @@
             display: block;
             margin-bottom: 6px;
             color: #65766D;
-            font-weight: 600;
+            font-weight: bold;
         }
 
         input {
@@ -47,14 +45,8 @@
             border: 1px solid #D9E2DC;
             border-radius: 7px;
             background-color: #FAFCFA;
-            color: #4A5550;
             box-sizing: border-box;
-            outline: none;
             font-size: 16px;
-        }
-
-        input:focus {
-            border-color: #A8C3B1;
         }
 
         .pulsanti {
@@ -67,25 +59,20 @@
         button {
             padding: 12px;
             background-color: #A9C4B3;
-            color: #FFFFFF;
+            color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 17px;
+            font-size: 18px;
         }
 
         button:hover {
             background-color: #8EAD9B;
         }
 
-        button.selezionato {
-            background-color: #617E6B;
-        }
-
         .uguale {
             grid-column: span 2;
             background-color: #819F8C;
-            font-weight: bold;
         }
 
         .risultato {
@@ -97,7 +84,6 @@
             font-size: 18px;
             font-weight: bold;
             text-align: center;
-            min-height: 25px;
         }
 
     </style>
@@ -111,26 +97,26 @@
     <div class="contenitore">
 
         <div class="campo">
-            <label for="numero1">Primo numero:</label>
+            <label>Primo numero:</label>
             <input type="text" id="numero1">
         </div>
 
         <div class="campo">
-            <label for="numero2">Secondo numero:</label>
+            <label>Secondo numero:</label>
             <input type="text" id="numero2">
         </div>
 
         <div class="pulsanti">
 
-            <button id="somma" onclick="seleziona('+')">+</button>
+            <button type="button" onclick="selezionaOperazione('+')">+</button>
 
-            <button id="sottrazione" onclick="seleziona('-')">-</button>
+            <button type="button" onclick="selezionaOperazione('-')">-</button>
 
-            <button id="moltiplicazione" onclick="seleziona('*')">*</button>
+            <button type="button" onclick="selezionaOperazione('*')">*</button>
 
-            <button id="divisione" onclick="seleziona('/')">/</button>
+            <button type="button" onclick="selezionaOperazione('/')">/</button>
 
-            <button class="uguale" onclick="calcola()">=</button>
+            <button type="button" class="uguale" onclick="calcola()">=</button>
 
         </div>
 
@@ -143,78 +129,54 @@
 
     <script>
 
-       
+    
 
         let operazione = "";
 
 
-      
+        
 
-        function seleziona(simbolo) {
+        function selezionaOperazione(simbolo) {
 
             operazione = simbolo;
 
-    
-
-            document.querySelectorAll(".pulsanti button")
-                .forEach(function(pulsante) {
-                    pulsante.classList.remove("selezionato");
-                });
-
-           
-
-            let pulsanteScelto;
-
-            if (simbolo === "+") {
-                pulsanteScelto = "somma";
-            }
-            else if (simbolo === "-") {
-                pulsanteScelto = "sottrazione";
-            }
-            else if (simbolo === "*") {
-                pulsanteScelto = "moltiplicazione";
-            }
-            else if (simbolo === "/") {
-                pulsanteScelto = "divisione";
-            }
-
-            document.getElementById(pulsanteScelto)
-                .classList.add("selezionato");
+            document.getElementById("risultato").innerHTML =
+                "Operazione selezionata: " + simbolo;
 
         }
 
 
-  
+    
 
         function calcola() {
 
-         
+            
 
-            let valore1 = document.getElementById("numero1").value.trim();
-            let valore2 = document.getElementById("numero2").value.trim();
+            let n1 = document.getElementById("numero1").value;
+            let n2 = document.getElementById("numero2").value;
 
           
 
-            if (valore1 === "" || valore2 === "") {
+            if (n1.trim() === "" || n2.trim() === "") {
 
                 alert("Inserire entrambi i numeri!");
                 return;
 
             }
 
-            let n1 = Number(valore1.replace(",", "."));
-            let n2 = Number(valore2.replace(",", "."));
+    
 
-           
+            n1 = Number(n1.replace(",", "."));
+            n2 = Number(n2.replace(",", "."));
 
             if (!Number.isFinite(n1) || !Number.isFinite(n2)) {
 
-                alert("Inserire solamente numeri validi!");
+                alert("Inserire numeri validi!");
                 return;
 
             }
 
-            
+           
 
             if (operazione === "") {
 
@@ -225,45 +187,32 @@
 
             let risultato;
 
-            switch (operazione) {
+            // Eseguo il calcolo
 
-                case "+":
-                    risultato = n1 + n2;
-                    break;
+            if (operazione === "+") {
 
-                case "-":
-                    risultato = n1 - n2;
-                    break;
-
-                case "*":
-                    risultato = n1 * n2;
-                    break;
-
-                case "/":
-
-                    if (n2 === 0) {
-
-                        alert("Impossibile dividere per zero!");
-                        return;
-
-                    }
-
-                    risultato = n1 / n2;
-                    break;
+                risultato = n1 + n2;
 
             }
+            else if (operazione === "-") {
 
-          
+                risultato = n1 - n2;
 
-            document.getElementById("risultato").textContent =
-                "Risultato: " + risultato;
-
-        }
-
-    </script>
-
-</body>
-
-</html>
             }
+            else if (operazione === "*") {
 
+                risultato = n1 * n2;
+
+            }
+            else if (operazione === "/") {
+
+                if (n2 === 0) {
+
+                    alert("Non puoi dividere per zero!");
+                    return;
+
+                }
+
+                risultato = n1 / n2;
+
+            }
