@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -154,41 +155,47 @@
 
             }
 
-            if (operazione == "+") {
+            switch (operazione) {
 
-                risultato = numero1 + numero2;
+                case "+":
 
-            }
+                    risultato = numero1 + numero2;
 
-            else if (operazione == "-") {
+                    break;
 
-                risultato = numero1 - numero2;
 
-            }
+                case "-":
 
-            else if (operazione == "*") {
+                    risultato = numero1 - numero2;
 
-                risultato = numero1 * numero2;
+                    break;
 
-            }
 
-            else if (operazione == "/") {
+                case "*":
 
-                if (numero2 == 0) {
+                    risultato = numero1 * numero2;
 
-                    alert("Non puoi dividere per zero!");
+                    break;
+
+
+                case "/":
+
+                    if (numero2 == 0) {
+
+                        alert("Non puoi dividere per zero!");
+                        return;
+
+                    }
+
+                    risultato = numero1 / numero2;
+
+                    break;
+
+
+                default:
+
+                    alert("Seleziona un'operazione!");
                     return;
-
-                }
-
-                risultato = numero1 / numero2;
-
-            }
-
-            else {
-
-                alert("Seleziona un'operazione!");
-                return;
 
             }
 
@@ -202,3 +209,4 @@
 </body>
 
 </html>
+
