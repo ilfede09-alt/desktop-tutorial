@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Decifratura — Federico Spanò</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #eeeee7;
+    color: #424940;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    padding: 8%;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.name {
+    font-size: clamp(55px, 12vw, 145px);
+    font-weight: 600;
+    letter-spacing: -8px;
+    line-height: 0.88;
+    color: #526456;
+    margin-bottom: 65px;
+}
+
+.subtitle {
+    color: #92988b;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+.section {
+    border-top: 1px solid #d4d8cd;
+    padding-top: 30px;
+}
+
+label {
+    display: block;
+    font-size: 11px;
+    color: #92988b;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+textarea, input {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    border: 1px solid #d4d8cd;
+    color: #424940;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    outline: none;
+    margin-bottom: 25px;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+textarea:focus, input:focus {
+    border-color: #899b83;
+}
+
+button, .link {
+    display: inline-block;
+    padding: 15px 25px;
+    background: #526456;
+    color: #eeeee7;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover, .link:hover {
+    background: #899b83;
+}
+
+.result {
+    display: none;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #d4d8cd;
+}
+
+.result-text {
+    font-size: clamp(20px, 3vw, 27px);
+    color: #526456;
+    overflow-wrap: anywhere;
+    margin-bottom: 20px;
+}
+
+footer {
+    margin-top: 85px;
+    color: #a1a597;
+    font-size: 11px;
+    letter-spacing: 3px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10% 7%;
+    }
+
+    .name {
+        letter-spacing: -4px;
+    }
+
+    button, .link {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 class="name">
+        DECIFRA<br>
+        IL TESTO
+    </h1>
+
+    <p class="subtitle">02 — DECIFRATURA DEL TESTO</p>
+
+    <div class="section">
+
+        <form id="form">
+
+            <label for="frase">
+                Inserisci la frase criptata
+            </label>
+
+            <textarea id="frase"
+                placeholder="Scrivi qui la frase criptata..."
+                required></textarea>
+
+            <label for="numero">
+                Numero di scostamento
+            </label>
+
+            <input type="number" id="numero"
+                placeholder="Es. 3"
+                step="1"
+                required>
+
+            <button type="submit">
+                Decifra la frase ↗
+            </button>
+
+        </form>
+
+        <div class="result" id="result">
+
+            <p class="subtitle">FRASE ORIGINALE</p>
+
+            <p class="result-text" id="originale"></p>
+
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 — FEDERICO SPANÒ
+    </footer>
+
+</div>
+
+<script>
+
+// Recupera i dati dalla prima pagina
+const parametri = new URLSearchParams(window.location.search);
+
+document.getElementById("frase").value =
+    parametri.get("testo") || "";
+
+if (parametri.has("numero")) {
+    document.getElementById("numero").value =
+        parametri.get("numero");
+}
+
+function decifra(testo, numero) {
+
+    numero = ((numero % 26) + 26) % 26;
+
+    return [...testo].map(carattere => {
+
+        let codice = carattere.charCodeAt(0);
+
+        // Lettere maiuscole
+        if (codice >= 65 && codice <= 90) {
+            return String.fromCharCode(
+                ((codice - 65 - numero + 26) % 26) + 65
+            );
+        }
+
+        // Lettere minuscole
+        if (codice >= 97 && codice <= 122) {
+            return String.fromCharCode(
+                ((codice - 97 - numero + 26) % 26) + 97
+            );
+        }
+
+        return carattere;
+
+    }).join("");
+
+}
+
+document.getElementById("form").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let frase = document.getElementById("frase").value;
+    let numero = Number(document.getElementById("numero").value);
+
+    if (!Number.isInteger(numero)) {
+        alert("Inserisci un numero intero!");
+        return;
+    }
+
+    let risultato = decifra(frase, numero);
+
+    document.getElementById("originale").textContent = risultato;
+
+    document.getElementById("result").style.display = "block";
+
+});
+
+</script>
+
+</body>
+</html>
