@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cifrario di Cesare — Decifratura</title>
+<title>Criptazione — Federico Spanò</title>
 
 <style>
 * {
@@ -28,9 +28,9 @@ body {
 }
 
 .name {
-    font-size: clamp(55px, 12vw, 120px);
+    font-size: clamp(55px, 12vw, 145px);
     font-weight: 600;
-    letter-spacing: -7px;
+    letter-spacing: -8px;
     line-height: 0.88;
     color: #526456;
     margin-bottom: 65px;
@@ -44,16 +44,16 @@ body {
     margin-bottom: 25px;
 }
 
-.form {
+.section {
     border-top: 1px solid #d4d8cd;
     padding-top: 30px;
 }
 
 label {
     display: block;
-    font-size: 13px;
+    font-size: 11px;
     color: #92988b;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 12px;
 }
@@ -100,9 +100,9 @@ button:hover, .link:hover {
 
 .result {
     display: none;
-    margin-top: 45px;
+    margin-top: 35px;
+    padding-top: 25px;
     border-top: 1px solid #d4d8cd;
-    padding-top: 30px;
 }
 
 .result-text {
@@ -142,45 +142,67 @@ footer {
 <div class="container">
 
     <h1 class="name">
-        DECIFRA<br>
-        LA FRASE
+        CIFRARIO<br>
+        DI CESARE
     </h1>
 
-    <p class="subtitle">DECIFRARE UNA FRASE — 2026</p>
+    <p class="subtitle">01 — CRIPTAZIONE DEL TESTO</p>
 
-    <form class="form" id="form">
+    <div class="section">
 
-        <label for="frase">Frase criptata</label>
+        <form id="form">
 
-        <textarea id="frase" placeholder="Inserisci la frase criptata..." required></textarea>
+            <label for="frase">
+                Inserisci la frase da criptare
+            </label>
 
-        <label for="scostamento">Inserisci lo stesso scostamento</label>
+            <textarea id="frase"
+                placeholder="Scrivi qui la tua frase..."
+                required></textarea>
 
-        <input type="number" id="scostamento" step="1" placeholder="Es. 3" required>
+            <label for="numero">
+                Numero di scostamento
+            </label>
 
-        <button type="submit">Decifra la frase ↗</button>
+            <input type="number" id="numero"
+                placeholder="Es. 3"
+                value="3"
+                step="1"
+                required>
 
-    </form>
+            <button type="submit">
+                Cripta la frase ↗
+            </button>
 
-    <div class="result" id="result">
+        </form>
 
-        <p class="subtitle">FRASE CORRETTA</p>
+        <div class="result" id="result">
 
-        <p class="result-text" id="fraseCorretta"></p>
+            <p class="subtitle">FRASE CRIPTATA</p>
+
+            <p class="result-text" id="criptata"></p>
+
+            <p class="subtitle">SCOSTAMENTO UTILIZZATO</p>
+
+            <p class="result-text" id="scostamento"></p>
+
+            <a href="#" class="link" id="vaiDecifra">
+                Vai alla decifratura ↗
+            </a>
+
+        </div>
 
     </div>
 
-    <a href="index.html" class="link">Torna alla criptazione ↗</a>
-
     <footer>
-        © 2026 — CIFRARIO DI CESARE
+        © 2026 — FEDERICO SPANÒ
     </footer>
 
 </div>
 
 <script>
 
-function decifra(testo, numero) {
+function cifra(testo, numero) {
 
     numero = ((numero % 26) + 26) % 26;
 
@@ -188,53 +210,60 @@ function decifra(testo, numero) {
 
         let codice = carattere.charCodeAt(0);
 
-        // Lettere maiuscole A-Z
+        // Lettere maiuscole
         if (codice >= 65 && codice <= 90) {
             return String.fromCharCode(
-                ((codice - 65 - numero + 26) % 26) + 65
+                ((codice - 65 + numero) % 26) + 65
             );
         }
 
-        // Lettere minuscole a-z
+        // Lettere minuscole
         if (codice >= 97 && codice <= 122) {
             return String.fromCharCode(
-                ((codice - 97 - numero + 26) % 26) + 97
+                ((codice - 97 + numero) % 26) + 97
             );
         }
 
+        // Spazi e punteggiatura invariati
         return carattere;
 
     }).join("");
 
 }
 
-// Recupera la frase criptata dalla prima pagina
-const parametri = new URLSearchParams(window.location.search);
-
-document.getElementById("frase").value =
-    parametri.get("testo") || "";
-
 document.getElementById("form").addEventListener("submit", function(event) {
 
     event.preventDefault();
 
     let frase = document.getElementById("frase").value;
-    let numero = Number(document.getElementById("scostamento").value);
+    let numero = Number(document.getElementById("numero").value);
 
     if (!Number.isInteger(numero)) {
         alert("Inserisci un numero intero!");
         return;
     }
 
-    let risultato = decifra(frase, numero);
+    let risultato = cifra(frase, numero);
 
-    document.getElementById("fraseCorretta").textContent = risultato;
+    document.getElementById("criptata").textContent = risultato;
+
+    document.getElementById("scostamento").textContent = numero;
 
     document.getElementById("result").style.display = "block";
+
+    // Collegamento alla seconda pagina
+    document.getElementById("vaiDecifra").href =
+        "decifra-01.html?testo=" +
+        encodeURIComponent(risultato) +
+        "&numero=" + encodeURIComponent(numero);
 
 });
 
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
